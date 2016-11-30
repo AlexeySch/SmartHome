@@ -2,10 +2,19 @@ import org.openhab.core.library.types.*
 import org.openhab.core.persistence.*
 import org.openhab.model.script.actions.* 
 
-rule "SMS on Power failure"
+String prev_UPS_status = "OB"
+
+rule "SMS on Power state chage"
 	when
 		Item UPS_Status changed or
 		System started 
 	then
+		if(UPS_Status=="OL" && prev_UPS_status == "OB")
+			logInfo("Power", "System/Power is up")
+
+		if(UPS_Status=="OB" && prev_UPS_status == "OL")
+			logInfo("Power", "Power is down !!!")
+		
+		prev_UPS_status = UPS_Status
 end
 
