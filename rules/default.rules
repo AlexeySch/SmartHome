@@ -9,12 +9,36 @@ rule "SMS on Power state chage"
 		Item UPS_Status changed or
 		System started 
 	then
-		if(UPS_Status=="OL" && prev_UPS_status == "OB")
-			logInfo("Power", "System/Power is up")
+		String message = ""
+		String phone = "+79065480824"
+		if(UPS_Status=="OL" && prev_UPS_status == "OB") {
+			message = "System/Power is up";
+			logInfo("Power", message)
+		}
 
-		if(UPS_Status=="OB" && prev_UPS_status == "OL")
-			logInfo("Power", "Power is down !!!")
+		if(UPS_Status=="OB" && prev_UPS_status == "OL") {
+			message = "Power is down !!!"
+			logInfo("Power", message)
+		}
+		if (message != ""){
+			String cmd = "To: " + phone +"\n\n" + message + "> /var/tmp/sms"
+			logInfo("SMS", cmd)
+			executeCommandLine(cmd)
+		}
+		
 		
 		prev_UPS_status = UPS_Status
 end
 
+rule "Test Rule"
+	when
+		Time cron "* * * * * ?" 
+	then
+		String message = ""
+		String phone = "+79065480824"
+			message = "System/Power is up";
+
+			String cmd = "To: " + phone +"\n\n" + message + "> /var/tmp/sms"
+			logInfo("SMS", cmd)
+			executeCommandLine(cmd)
+end
