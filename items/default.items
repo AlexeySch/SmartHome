@@ -1,6 +1,6 @@
 Group Power       "Power"       <sun>
 Group Power_Chart
 Number Power_Voltage      "Power Voltage [%.1f V]" <poweroutlet> (Power, Power_Chart) {networkupstools="ups1:input.voltage"}
-String Power_Status "Power Status is [MAP(ups.map):%s]" (Power) {networkupstools="ups1:ups.status"}
+String Power_Status "Power Status is [MAP(ups.map):%s]" <heating-on> (Power) {networkupstools="ups1:ups.status"}
 Number Power_Chart_Period     "Chart Period" <poweroutlet>
 
