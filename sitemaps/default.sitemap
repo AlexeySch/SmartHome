@@ -2,7 +2,7 @@ sitemap demo label="Main Menu"
 {
 	Frame label="Power" {
 		Text item=Power_Voltage {
-			Text item=UPS_Status
+			Text item=Power_Status
 			Frame {
 				Switch item=Power_Chart_Period label="Chart Period" mappings=[0="Hour", 1="Day", 2="Week"]
 				Chart item=Power_Chart period=h refresh=6000 visibility=[Power_Chart_Period==0, Power_Chart_Period=="Uninitialized"]
