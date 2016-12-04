@@ -1,44 +1,34 @@
-import org.openhab.core.library.types.*
-import org.openhab.core.persistence.*
-import org.openhab.model.script.actions.* 
-
-String prev_UPS_status = "OB"
+var String prev_Power_Status = "OB"
 
 rule "SMS on Power state chage"
 	when
-		Item UPS_Status changed or
+		Item Power_Status changed or
 		System started 
 	then
-		String message = ""
-		String phone = "+79065480824"
-		if(UPS_Status=="OL" && prev_UPS_status == "OB") {
-			message = "System/Power is up";
-			logInfo("Power", message)
+
+		if(Power_Status=="OL" && prev_Power_Status == "OB") {
+		//	logInfo("APP", "Power Up")
+		//	executeCommandLine("/etc/openhab2/scripts/power-up.sh")
 		}
 
-		if(UPS_Status=="OB" && prev_UPS_status == "OL") {
-			message = "Power is down !!!"
-			logInfo("Power", message)
-		}
-		if (message != ""){
-			String cmd = "To: " + phone +"\n\n" + message + "> /var/tmp/sms"
-			logInfo("SMS", cmd)
-			executeCommandLine(cmd)
+		if(Power_Status=="OB" && prev_Power_Status == "OL") {
+		//	logInfo("APP", "Power Down)
+		//	executeCommandLine("/etc/openhab2/scripts/power-down.sh")
 		}
 		
 		
-		prev_UPS_status = UPS_Status
+		prev_Power_Status = Power_Status
 end
 
 rule "Test Rule"
 	when
-		Time cron "* * * * * ?" 
+		Time cron "0 0 0 0 0 ?" 
 	then
-		String message = ""
-		String phone = "+79065480824"
+		var String message = ""
+		var String phone = "+79065480824"
 			message = "System/Power is up";
 
-			String cmd = "To: " + phone +"\n\n" + message + "> /var/tmp/sms"
+			var String cmd = 'echo To > /tmp/testsms.msg'
 			logInfo("SMS", cmd)
 			executeCommandLine(cmd)
 end
