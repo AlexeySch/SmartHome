@@ -6,6 +6,7 @@ Number Power_Chart_Period     "Chart Period" <poweroutlet>
 
 Group Weather	"Wheather" <temperature>
 Group Weather_Chart
+String Temp_Hum_Inside (Wheather)
 Number Temperature_Inside (Wheather, Weather_Chart)
 Number Humidity_Inside (Wheather, Weather_Chart)
 Number Weather_Chart_Period     "Chart Period" <temperature>
