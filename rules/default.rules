@@ -1,34 +1,67 @@
-var String prev_Power_Status = "OB"
+rule "Temperature and Humidity update"
+        when
+                Time cron 0/3 * * * * ?
+        then
+
+                logInfo("APP", "Temperature and Humidity update")
+                //var Number temp = transform ("REGEX", "Temp=(.*)\*", Temp_Hum_Inside )
+                //var Number hum = transform ("REGEX", "Humidity=(.*)%", Temp_Hum_Inside )
+
+                  //      logInfo("APP", temp)
+                    //    logInfo("APP", hum)
+
+end
+
 
 rule "SMS on Power state chage"
 	when
 		Item Power_Status changed or
 		System started 
 	then
+		logInfo("APP", "Power Status handler started " + previousState + " " + Power_Status)
 
-		if(Power_Status=="OL" && prev_Power_Status == "OB") {
-		//	logInfo("APP", "Power Up")
-		//	executeCommandLine("/etc/openhab2/scripts/power-up.sh")
+
+		if((Power_Status.state=="OL") && (previousState  == "OB" || previousState == null )) {
+			logInfo("APP", "Power Up")
+		//	executeCommandLine("/etc/openhab2/scripts/power-up.sh",500)
 		}
 
-		if(Power_Status=="OB" && prev_Power_Status == "OL") {
-		//	logInfo("APP", "Power Down)
-		//	executeCommandLine("/etc/openhab2/scripts/power-down.sh")
+		if((Power_Status.state=="OB") && (previousState  == "OL")) {
+			logInfo("APP", "Power Down)
+			executeCommandLine("/etc/openhab2/scripts/power-down.sh",500)
 		}
 		
 		
-		prev_Power_Status = Power_Status
+		logInfo("APP", "Power Status handler completed")
+
 end
+
 
 rule "Test Rule"
 	when
-		Time cron "0 0 0 0 0 ?" 
+		Item Weather_Chart_Period changed 
 	then
-		var String message = ""
-		var String phone = "+79065480824"
-			message = "System/Power is up";
 
-			var String cmd = 'echo To > /tmp/testsms.msg'
-			logInfo("SMS", cmd)
-			executeCommandLine(cmd)
+			var String cmd = 'echo@@To@@>@@/var/spool/sms/failed/failed.msg'
+			//cmd = "/etc/openhab2/scripts/power-up.sh"
+			logInfo("APP", cmd)
+		        logInfo("APP", "Power Up")
+
+			//val String results = executeCommandLine(cmd,1000)
+			logInfo("APP", results)
 end
+
+
+rule "Temperature or Humidity change"
+        when
+                Item Temperature_Inside changed 
+        then
+		logInfo("APP", Temperature_Inside)
+		//var Number temp = transform ("REGEX", "Temp=(.*)\*", Temp_Hum_Inside )
+                //var Number hum = transform ("REGEX", "Humidity=(.*)%", Temp_Hum_Inside )
+
+                  //      logInfo("APP", temp)
+                    //    logInfo("APP", hum)
+
+end
+

@@ -7,7 +7,7 @@ Strategies {
 Items {
 	
 	// let's only store temperature values in rrd
-	Power* : strategy = everyMinute, restoreOnStartup
+	*: strategy = everyMinute, restoreOnStartup
 }
 
 // vim: syntax=Xtend syntax=openhab

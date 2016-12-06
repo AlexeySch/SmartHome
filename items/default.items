@@ -4,9 +4,9 @@ Number Power_Voltage      "Power Voltage [%.1f V]" <poweroutlet> (Power, Power_C
 String Power_Status "Power Status is [MAP(ups.map):%s]" <heating-on> (Power) {networkupstools="ups1:ups.status"}
 Number Power_Chart_Period     "Chart Period" <poweroutlet>
 
-Group Weather	"Wheather" <temperature>
-Group Weather_Chart
-String Temp_Hum_Inside (Wheather)
-Number Temperature_Inside (Wheather, Weather_Chart)
-Number Humidity_Inside (Wheather, Weather_Chart)
+Group Weather	"Weather" <temperature>
+Group Temperature_Chart
+String Temp_Hum_Inside "Value [%s]" (Wheather)
+Number Temperature_Inside "Inside Temperature [%.1f C]" <temperature> (Weather, Temperature_Chart) {exec="<[/etc/openhab2/scripts/AdafruitDHT.py 2302 4:60000:REGEX(Temp=(.*)\\*.*)]"}
+Number Humidity_Inside (Weather)
 Number Weather_Chart_Period     "Chart Period" <temperature>
