@@ -1,19 +1,25 @@
+import org.openhab.core.library.types.*
+
 rule "Temperature and Humidity update"
         when
-                Time cron 0/3 * * * * ?
+                Time cron "0 * * * * ?"
         then
 
-                logInfo("APP", "Temperature and Humidity update")
-                //var Number temp = transform ("REGEX", "Temp=(.*)\*", Temp_Hum_Inside )
-                //var Number hum = transform ("REGEX", "Humidity=(.*)%", Temp_Hum_Inside )
-
-                  //      logInfo("APP", temp)
-                    //    logInfo("APP", hum)
+	        logInfo("APP", "Temperature and Humidity update")
+	        var String result = executeCommandLine('/etc/openhab2/scripts/AdafruitDHT.py 2302 4',5000)
+			logInfo("APP", result)
+			if((result != "") && (result != "Failed to get reading. Try again!")) 
+			{
+				var Number t = transform ("REGEX", "Temp=(.*)\\*", result) as DecimalType
+	        	var Number h = transform ("REGEX", "Humidity=(.*)%", result) as DecimalType
+	        	postUpdate(Temperature_Inside,t)
+	        	postUpdate(Humidity_Inside,h)			
+			}
 
 end
 
 
-rule "SMS on Power state chage"
+rule "SMS on Power state change"
 	when
 		Item Power_Status changed or
 		System started 
@@ -23,45 +29,16 @@ rule "SMS on Power state chage"
 
 		if((Power_Status.state=="OL") && (previousState  == "OB" || previousState == null )) {
 			logInfo("APP", "Power Up")
-		//	executeCommandLine("/etc/openhab2/scripts/power-up.sh",500)
+		//	executeCommandLine('/etc/openhab2/scripts/power-up.sh',500)
 		}
 
 		if((Power_Status.state=="OB") && (previousState  == "OL")) {
-			logInfo("APP", "Power Down)
-			executeCommandLine("/etc/openhab2/scripts/power-down.sh",500)
+			logInfo("APP", "Power Down");
+			executeCommandLine('/etc/openhab2/scripts/power-down.sh',500)
 		}
 		
 		
 		logInfo("APP", "Power Status handler completed")
-
-end
-
-
-rule "Test Rule"
-	when
-		Item Weather_Chart_Period changed 
-	then
-
-			var String cmd = 'echo@@To@@>@@/var/spool/sms/failed/failed.msg'
-			//cmd = "/etc/openhab2/scripts/power-up.sh"
-			logInfo("APP", cmd)
-		        logInfo("APP", "Power Up")
-
-			//val String results = executeCommandLine(cmd,1000)
-			logInfo("APP", results)
-end
-
-
-rule "Temperature or Humidity change"
-        when
-                Item Temperature_Inside changed 
-        then
-		logInfo("APP", Temperature_Inside)
-		//var Number temp = transform ("REGEX", "Temp=(.*)\*", Temp_Hum_Inside )
-                //var Number hum = transform ("REGEX", "Humidity=(.*)%", Temp_Hum_Inside )
-
-                  //      logInfo("APP", temp)
-                    //    logInfo("APP", hum)
 
 end
 

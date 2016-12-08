@@ -6,7 +6,6 @@ Number Power_Chart_Period     "Chart Period" <poweroutlet>
 
 Group Weather	"Weather" <temperature>
 Group Temperature_Chart
-String Temp_Hum_Inside "Value [%s]" (Wheather)
-Number Temperature_Inside "Inside Temperature [%.1f C]" <temperature> (Weather, Temperature_Chart) {exec="<[/etc/openhab2/scripts/AdafruitDHT.py 2302 4:60000:REGEX(Temp=(.*)\\*.*)]"}
-Number Humidity_Inside (Weather)
+Number Temperature_Inside "Inside Temperature [%.1f C]" <temperature> (Weather, Temperature_Chart)
+Number Humidity_Inside  Inside Humidity [%.1f %%] <temperature> (Weather)
 Number Weather_Chart_Period     "Chart Period" <temperature>
