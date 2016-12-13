@@ -1,11 +1,12 @@
 Group Power       "Power"       <sun>
 Group Power_Chart
-Number Power_Voltage      "Power Voltage [%.1f V]" <poweroutlet> (Power, Power_Chart) {networkupstools="ups1:input.voltage"}
-String Power_Status "Power Status is [MAP(ups.map):%s]" <heating-on> (Power) {networkupstools="ups1:ups.status"}
+Group Telemetry
+Number Power_Voltage      "Power Voltage [%.1f V]" <poweroutlet> (Power, Power_Chart,Telemetry) {networkupstools="ups1:input.voltage"}
+String Power_Status "Power Status is [MAP(ups.map):%s]" <heating-on> (Power,Telemetry) {networkupstools="ups1:ups.status"}
 Number Power_Chart_Period     "Chart Period" <poweroutlet>
 
 Group Weather	"Weather" <temperature>
 Group Temperature_Chart
-Number Temperature_Inside "Inside Temperature [%.1f C]" <temperature> (Weather, Temperature_Chart)
-Number Humidity_Inside  Inside Humidity [%.1f %%] <temperature> (Weather)
+Number Temperature_Inside "Inside Temperature [%.1f C]" <temperature> (Weather, Temperature_Chart,Telemetry)
+Number Humidity_Inside  "Inside Humidity [%.1f %%]" <temperature> (Weather,Telemetry)
 Number Weather_Chart_Period     "Chart Period" <temperature>
