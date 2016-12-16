@@ -2,13 +2,13 @@
 Strategies {
 	// for rrd charts, we need a cron strategy
 	everyMinute : "0 * * * * ?"
-	every5Minutes : "0 */5 * * * ?"
+	every30Minutes : "0 */30 * * * ?"
 }
 
 Items {
 	
 	// let's only store temperature values in rrd
-	Telemetry*: strategy = every5Minutes
+	Telemetry*: strategy = every30Minutes
 }
 
 // vim: syntax=Xtend syntax=openhab

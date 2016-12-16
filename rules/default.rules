@@ -1,5 +1,11 @@
 import org.openhab.core.library.types.*
 
+rule "Test SMS Rule"
+        when
+                Time cron "0 0 * * * ?"
+        then
+end
+
 rule "Temperature and Humidity update"
         when
                 Time cron "0 * * * * ?"
@@ -11,8 +17,8 @@ rule "Temperature and Humidity update"
 		{
 			var String t = transform ("REGEX", "Temp=(.*)\\*.*", result)
 	        	var String h = transform ("REGEX", ".*Humidity=(.*)%", result)
-			logInfo("APP", t)
-			logInfo("APP", h)
+			logDebug("APP", t)
+			logDebug("APP", h)
 	        	postUpdate(Temperature_Inside,t)
 	        	postUpdate(Humidity_Inside,h)			
 		}
@@ -32,12 +38,16 @@ rule "SMS on Power state change"
 			logInfo("APP", "Power Up")
 			sendNotification("AlexeySch@gmail.com", "Power Up")
 			sendSms("+79065480824", "Power Up")
+                       // executeCommandLine('/etc/openhab2/scripts/sendsms.sh@@Power Up@@79065480824',2500)
+
 		//	executeCommandLine('/etc/openhab2/scripts/power-up.sh',500)
 		}
 
 		if((Power_Status.state=="OB") && (previousState  == "OL")) {
 			logInfo("APP", "Power Down");
-			executeCommandLine('/etc/openhab2/scripts/power-down.sh',500)
+			//executeCommandLine('/etc/openhab2/scripts/power-down.sh',500)
+			sendSms("+79065480824", "Power Up")
+			executeCommandLine('/etc/openhab2/scripts/sendsms.sh@@Power Down@@79065480824',2500)
 		}
 		
 		
